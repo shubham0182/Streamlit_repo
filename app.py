@@ -1,14 +1,21 @@
-import streamlit as st 
+import streamlit as st
+import pandas as pd
 
-st.title("Data Science Portfolio")
-col1,col2,col3 =st.columns([1,1,1])
-col1.header("Project 1")
-col2.header("Project 2")
-col3.header("Project 3")
+st.title("Chai Sales Dashboard")
 
-st.sidebar.header("About Me")
-st.sidebar.button('Introduction',icon_position='right')
-st.sidebar.button('Contact',icon_position='right')
-st.sidebar.button('Resume',icon_position='right')
+file  = st.file_uploader("hospitals.csv", type=["csv"])
 
-st.image("image.png",width=200, caption="Data Science")
+if file:
+    df = pd.read_csv(file)
+    st.subheader("Data Preview")
+    st.dataframe(df)
+
+if file:
+    st.subheader("Summary Stats")
+    st.write(df.describe())
+
+if file:
+    cities = df["City"].unique()
+    selected_city = st.selectbox("Filter by cities", cities)
+    filtered_data = df[df["City"] == selected_city]
+    st.dataframe(filtered_data)
